@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  test:
+    uses: ./.github/workflows/tests.yml
+
+  publish:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/publish.yml
+    secrets: inherit

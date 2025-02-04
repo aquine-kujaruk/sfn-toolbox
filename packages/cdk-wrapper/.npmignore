@@ -1,0 +1,5 @@
+src/
+tests/
+*.test.ts
+tsconfig.json
+.eslintrc 

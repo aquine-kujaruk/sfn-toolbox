@@ -1,0 +1,41 @@
+{
+  "name": "sfn-utils",
+  "private": true,
+  "description": "Useful tools for AWS Step Functions service",
+  "author": "aquine-kujaruk",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aquine-kujaruk/sfn-toolbox"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "jest",
+    "build": "yarn workspaces run build",
+    "release": "lerna version --yes && lerna publish from-package --yes",
+    "prepare": "husky",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prettier": "prettier . --check",
+    "prettier:fix": "prettier . --write",
+    "format": "npm run prettier:fix && npm run lint:fix"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@eslint/js": "^9.19.0",
+    "@lerna/project": "^6.4.1",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.12.0",
+    "eslint": "^9.19.0",
+    "eslint-config-prettier": "^10.0.1",
+    "husky": "^9.1.7",
+    "jest": "^29.7.0",
+    "lerna": "^8.1.9",
+    "prettier": "3.4.2",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}

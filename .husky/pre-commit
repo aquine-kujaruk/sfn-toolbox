@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+echo "Applying format and linting..."
+npm run format
+
+echo "Running tests..."
+npm run test
+
+git add .

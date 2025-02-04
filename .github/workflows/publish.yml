@@ -1,0 +1,68 @@
+name: Publish Packages
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: write
+  packages: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+          scope: 'sfn-utils'
+
+      - name: Configure npm registry for sfn-utils
+        run: echo "sfn-utils:registry=https://registry.npmjs.org/" > ~/.npmrc
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build packages
+        run: yarn build
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Check for package changes
+        id: check-changes
+        run: |
+          CHANGES=$(npx lerna changed)
+          if [[ -z "$CHANGES" ]]; then
+            echo "No changes detected. Skipping publish."
+            echo "PUBLISH=false" >> $GITHUB_ENV
+          else
+            echo "PUBLISH=true" >> $GITHUB_ENV
+          fi
+
+      - name: Version packages
+        if: env.PUBLISH == 'true'
+        run: |
+          git fetch --tags
+          npx lerna version --conventional-commits --no-commit-hooks --yes --no-private
+          git push --follow-tags
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to NPM
+        if: env.PUBLISH == 'true'
+        run: npx lerna publish from-git --yes
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

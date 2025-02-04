@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json",
+  "version": "independent",
+  "npmClient": "yarn",
+  "packages": ["packages/*"],
+  "command": {
+    "version": {
+      "conventionalCommits": true,
+      "createRelease": "github",
+      "message": "chore(release): publish %s"
+    },
+    "publish": {
+      "conventionalCommits": true,
+      "yes": true,
+      "allowBranch": ["main"]
+    }
+  },
+  "changelogPreset": "conventional-changelog-conventionalcommits"
+}

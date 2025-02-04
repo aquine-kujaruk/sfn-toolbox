@@ -1,0 +1,36 @@
+{
+  "name": "@sfn-toolbox/cdk-wrapper",
+  "version": "0.0.0",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "aquine-kujaruk",
+  "license": "MIT",
+  "description": "CDK constructs wrapper for AWS Step Functions",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aquine-kujaruk/sfn-toolbox",
+    "directory": "packages/cdk-wrapper"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "aws",
+    "cdk",
+    "step-functions"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.177.0",
+    "constructs": "^10.4.2"
+  }
+}

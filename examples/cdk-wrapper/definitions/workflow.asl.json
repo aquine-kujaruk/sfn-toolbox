@@ -1,0 +1,40 @@
+{
+  "StartAt": "Validate Flight",
+  "States": {
+    "Validate Flight": {
+      "Next": "Flight Successfully Validated",
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:${region}:${account}:function:validateFlight-${stage}",
+      "Parameters": {
+        "flightNumber.$": "$.flightNumber",
+        "deliveryGate.$": "$.deliveryGate"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 2,
+          "BackoffRate": 3.5
+        }
+      ],
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "ResultPath": "$.error",
+          "Next": "Handle Flight Error"
+        }
+      ],
+      "Assign": {
+        "validatedFlightDetails.$": "$"
+      }
+    },
+    "Flight Successfully Validated": {
+      "Type": "Succeed"
+    },
+    "Handle Flight Error": {
+      "Type": "Fail",
+      "Error": "Flight Validation Error",
+      "Cause": "Error validating flight information"
+    }
+  }
+}
