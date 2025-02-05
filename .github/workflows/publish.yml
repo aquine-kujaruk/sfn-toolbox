@@ -44,12 +44,11 @@ jobs:
       - name: Check for package changes
         id: check-changes
         run: |
-          CHANGES=$(npx lerna changed)
-          if [[ -z "$CHANGES" ]]; then
+          if npx lerna changed &>/dev/null; then
+            echo "PUBLISH=true" >> $GITHUB_ENV
+          else
             echo "No changes detected. Skipping publish."
             echo "PUBLISH=false" >> $GITHUB_ENV
-          else
-            echo "PUBLISH=true" >> $GITHUB_ENV
           fi
 
       - name: Version packages
