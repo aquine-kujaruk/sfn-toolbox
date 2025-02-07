@@ -19,8 +19,6 @@
 - [License](#License)
 
 ![npm](https://img.shields.io/npm/v/@sfn-toolbox/cdk-wrapper)
-![Minified Size](https://img.shields.io/bundlephobia/min/@sfn-toolbox/cdk-wrapper)
-![Downloads](https://img.shields.io/npm/dm/@sfn-toolbox/cdk-wrapper)
 
 ## Introduction
 
@@ -136,17 +134,14 @@ const definition = {
   States: {
     ValidateFlight: {
       Type: 'Task',
-      Resource: 'arn:aws:lambda:${region}:${account}:function:validateFlight-${stage}',
-      End: true,
+      Resource: '${validateFlightFunctionArn}',
     },
   },
 };
 
 const stateMachine = StateMachine.fromObject(definition, {
   definitionSubstitutions: {
-    region: 'us-east-1',
-    account: '123456789012',
-    stage: 'dev',
+    validateFlightFunctionArn: 'arn:aws:lambda:us-east-1:123456789012:function:validateFlight-dev',
   },
 });
 ```
